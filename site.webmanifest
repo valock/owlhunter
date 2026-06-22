@@ -1,0 +1,13 @@
+{
+  "name": "Aldacir — Nature Guide & Handyman",
+  "short_name": "Aldacir",
+  "description": "Private eco-tours, birdwatching and wildlife photography in South Florida, plus handyman & property care in Boca Raton.",
+  "lang": "en",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0C211D",
+  "theme_color": "#0C211D",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
