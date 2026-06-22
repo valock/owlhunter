@@ -44,6 +44,7 @@
     "@type": "LocalBusiness",
     "name": "Aldacir Nature Guide & Handyman Services",
     "description": "Private eco-tours, birdwatching, wildlife photography and handyman services in Boca Raton, South Florida.",
+    "image": "https://owlhunter.netlify.app/social-card.png",
     "areaServed": "Boca Raton, Florida",
     "telephone": "+1-561-706-8468",
     "email": "Aldo100x@hotmail.com",
@@ -302,8 +303,8 @@
 
         <form class="contact__form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="contact-form">
           <input type="hidden" name="form-name" value="contact" />
-          <p class="hidden-field">
-            <label>Don't fill this out: <input name="bot-field" /></label>
+          <p class="hidden-field" aria-hidden="true">
+            <label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
           </p>
 
           <div class="field">

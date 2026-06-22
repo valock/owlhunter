@@ -120,8 +120,11 @@
     if (!("IntersectionObserver" in window)) return;
     var links = {};
     document.querySelectorAll(".nav__links a").forEach(function (a) {
-      var id = a.getAttribute("href").replace("#", "");
-      if (id) links[id] = a;
+      var href = a.getAttribute("href");
+      if (href && href.indexOf("#") === 0) {
+        var id = href.slice(1);
+        if (id) links[id] = a;
+      }
     });
     var sections = document.querySelectorAll("main section[id]");
     var spy = new IntersectionObserver(function (entries) {
@@ -151,6 +154,8 @@
 
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+      var btn = form.querySelector('button[type="submit"]');
+      if (btn) btn.disabled = true;
       if (status) { status.className = "form-status"; status.textContent = copy.sending[lang()]; }
 
       var data = new FormData(form);
@@ -166,6 +171,8 @@
         if (status) { status.className = "form-status is-ok"; status.textContent = copy.ok[lang()]; }
       }).catch(function () {
         if (status) { status.className = "form-status is-error"; status.textContent = copy.err[lang()]; }
+      }).finally(function () {
+        if (btn) btn.disabled = false;
       });
     });
   }
@@ -441,6 +448,24 @@
       }
     }
 
+    function drawFireflies(t) {
+      for (var i = 0; i < fireflies.length; i++) {
+        var f = fireflies[i];
+        var a = 0.35 + 0.45 * Math.sin(t * (1 + f.sp) + f.ph);
+        if (a <= 0.02) continue;
+        var fx = f.x + Math.sin(t * f.sp + f.ph) * f.drift;
+        var fy = f.y + Math.cos(t * f.sp * 0.7 + f.ph) * (f.drift * 0.3);
+        var rad = f.r * 4;
+        var g = ctx.createRadialGradient(fx, fy, 0, fx, fy, rad);
+        g.addColorStop(0, "rgba(255, 209, 122, " + a + ")");
+        g.addColorStop(1, "rgba(255, 209, 122, 0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(fx, fy, rad, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
     function frame(t) {
       ctx.clearRect(0, 0, w, h);
       drawSky();
@@ -449,6 +474,7 @@
       drawWater(t);
       drawOwl(t);
       drawReeds(t);
+      drawFireflies(t);
     }
 
     var start = performance.now();
@@ -461,6 +487,19 @@
     resize();
     if (prefersReduced) {
       frame(0.4); // single static dusk frame, eyes open
+    } else if ("IntersectionObserver" in window) {
+      // Only animate while the hero is on screen — saves CPU/GPU & battery.
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && !raf) {
+            raf = requestAnimationFrame(loop);
+          } else if (!entry.isIntersecting && raf) {
+            cancelAnimationFrame(raf);
+            raf = null;
+          }
+        });
+      }, { threshold: 0 });
+      io.observe(canvas);
     } else {
       raf = requestAnimationFrame(loop);
     }
@@ -472,6 +511,11 @@
         resize();
         if (prefersReduced) frame(0.4);
       }, 150);
+    });
+    // CSS/fonts may settle after DOMContentLoaded — re-measure once fully loaded.
+    window.addEventListener("load", function () {
+      resize();
+      if (prefersReduced) frame(0.4);
     });
   }
 })();
