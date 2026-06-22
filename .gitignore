@@ -1,0 +1,12 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Dependencies (none needed — static site)
+node_modules/
+
+# Netlify
+.netlify/
