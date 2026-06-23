@@ -560,6 +560,7 @@ a { color: inherit; }
   grid-template-columns: repeat(4, 1fr);
   gap: clamp(0.8rem, 2vw, 1.4rem);
 }
+.plates[hidden] { display: none; }
 .plate {
   position: relative;
   border: 1px solid var(--line);
