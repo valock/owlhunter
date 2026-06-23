@@ -13,6 +13,7 @@
     initReveal();
     initScrollSpy();
     initForm();
+    initInstagram();
     initHeroScene();
   });
 
@@ -175,6 +176,33 @@
         if (btn) btn.disabled = false;
       });
     });
+  }
+
+  /* ---------- Live Instagram feed (Behold widget, optional) ----------
+     Stays dormant until a feed ID is set on #ig-feed[data-behold-id]; the
+     designed placeholder plates remain visible until then. No third-party
+     script is loaded unless a real feed ID is present. */
+  function initInstagram() {
+    var mount = document.getElementById("ig-feed");
+    if (!mount) return;
+    var id = (mount.getAttribute("data-behold-id") || "").trim();
+    if (!id) return; // keep the placeholder plates
+
+    if (!document.getElementById("behold-widget-js")) {
+      var s = document.createElement("script");
+      s.id = "behold-widget-js";
+      s.type = "module";
+      s.src = "https://w.behold.so/widget.js";
+      document.head.appendChild(s);
+    }
+
+    var widget = document.createElement("behold-widget");
+    widget.setAttribute("feed-id", id);
+    mount.appendChild(widget);
+    mount.hidden = false;
+
+    var plates = document.getElementById("plates");
+    if (plates) plates.hidden = true;
   }
 
   /* ---------- Hero scene: Everglades twilight + perched owl ---------- */
