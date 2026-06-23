@@ -178,31 +178,56 @@
     });
   }
 
-  /* ---------- Live Instagram feed (Behold widget, optional) ----------
-     Stays dormant until a feed ID is set on #ig-feed[data-behold-id]; the
-     designed placeholder plates remain visible until then. No third-party
-     script is loaded unless a real feed ID is present. */
+  /* ---------- Live Instagram posts (official embed) ----------
+     Renders the public posts listed below using Instagram's own embed.js.
+     No account access needed — just public permalinks. When the list is
+     empty, the designed placeholder plates stay visible. */
   function initInstagram() {
     var mount = document.getElementById("ig-feed");
     if (!mount) return;
-    var id = (mount.getAttribute("data-behold-id") || "").trim();
-    if (!id) return; // keep the placeholder plates
 
-    if (!document.getElementById("behold-widget-js")) {
-      var s = document.createElement("script");
-      s.id = "behold-widget-js";
-      s.type = "module";
-      s.src = "https://w.behold.so/widget.js";
-      document.head.appendChild(s);
-    }
+    // Featured @owl.hunter.1 posts, in display order. Add or remove links here.
+    var posts = [
+      "https://www.instagram.com/p/DZv0w1MxY0I/",
+      "https://www.instagram.com/p/DZBkdP9hRmq/",
+      "https://www.instagram.com/p/DXX5ArnkbOY/",
+      "https://www.instagram.com/reel/DV4ah54Ee4l/",
+      "https://www.instagram.com/p/DSd5WpmkepB/",
+      "https://www.instagram.com/reel/DRDdFRXkdvR/"
+    ];
+    if (!posts.length) return; // keep the placeholder plates
 
-    var widget = document.createElement("behold-widget");
-    widget.setAttribute("feed-id", id);
-    mount.appendChild(widget);
+    posts.forEach(function (url) {
+      var bq = document.createElement("blockquote");
+      bq.className = "instagram-media";
+      bq.setAttribute("data-instgrm-permalink", url);
+      bq.setAttribute("data-instgrm-version", "14");
+      var a = document.createElement("a");
+      a.href = url;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = "View this post on Instagram";
+      bq.appendChild(a);
+      mount.appendChild(bq);
+    });
     mount.hidden = false;
 
     var plates = document.getElementById("plates");
     if (plates) plates.hidden = true;
+
+    var process = function () {
+      if (window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process();
+    };
+    if (window.instgrm && window.instgrm.Embeds) {
+      process();
+    } else if (!document.getElementById("ig-embed-js")) {
+      var s = document.createElement("script");
+      s.id = "ig-embed-js";
+      s.async = true;
+      s.src = "https://www.instagram.com/embed.js";
+      s.onload = process;
+      document.body.appendChild(s);
+    }
   }
 
   /* ---------- Hero scene: Everglades twilight + perched owl ---------- */

@@ -2,22 +2,24 @@
 
 The home-page gallery has two ways to show real photos. Pick whichever you prefer.
 
-## Option A — Auto-sync from Instagram (recommended)
+## Option A — Embed public Instagram posts (in use)
 
-Shows the latest @owl.hunter.1 posts and updates itself, using a free **Behold**
-feed (no coding):
+Shows specific public posts using Instagram's official embed. **No account
+access needed** — only the public post links.
 
-1. Go to https://behold.so and sign up (free).
-2. Connect the Instagram account (@owl.hunter.1) and create a feed.
-3. Copy the **feed ID**.
-4. In `index.html`, find this line in the gallery section and paste the ID:
+1. Open the post on Instagram and copy its link
+   (format `https://www.instagram.com/p/SHORTCODE/`, or `/reel/SHORTCODE/`).
+2. In `script.js`, edit the `posts` array inside `initInstagram()`:
 
-   ```html
-   <div id="ig-feed" class="ig-feed" data-behold-id="PASTE_FEED_ID_HERE" hidden></div>
+   ```js
+   var posts = [
+     "https://www.instagram.com/p/DZv0w1MxY0I/",
+     // add or remove links here, in display order
+   ];
    ```
 
-5. Deploy. The placeholder plates are replaced automatically by the live feed.
-   (SnapWidget or LightWidget work too — just drop their embed in `#ig-feed`.)
+3. Deploy. The embeds replace the placeholder plates automatically. Leave the
+   array empty to fall back to the designed plates.
 
 ## Option B — Hand-picked photos
 
