@@ -613,12 +613,21 @@ a { color: inherit; }
 .plate__label { font-family: var(--font-display); font-weight: 500; font-size: var(--step-0); }
 .plate__meta { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.06em; color: var(--muted); }
 
-.ig-feed {
-  --behold-gap: clamp(0.8rem, 2vw, 1.4rem);
-  --behold-border-radius: var(--radius);
-  --behold-row-height: minmax(180px, 1fr);
+.ig-embeds {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: clamp(0.9rem, 2vw, 1.5rem);
+  align-items: start;
+  justify-items: center;
 }
-.ig-feed[hidden] { display: none; }
+.ig-embeds[hidden] { display: none; }
+.ig-embeds .instagram-media {
+  margin: 0 !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 420px !important;
+  box-shadow: 0 22px 44px -30px rgba(0, 0, 0, 0.85) !important;
+}
 
 .gallery__cta {
   display: flex;
