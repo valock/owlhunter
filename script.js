@@ -573,18 +573,19 @@
       raf = requestAnimationFrame(loop);
     }
 
+    // Resizing the backing store clears it, so repaint immediately whenever the
+    // animation loop isn't running — reduced motion, or paused while off-screen.
+    function remeasure() {
+      resize();
+      if (!raf) frame(prefersReduced ? 0.4 : (performance.now() - start) / 1000);
+    }
+
     var rt;
     window.addEventListener("resize", function () {
       clearTimeout(rt);
-      rt = setTimeout(function () {
-        resize();
-        if (prefersReduced) frame(0.4);
-      }, 150);
+      rt = setTimeout(remeasure, 150);
     });
     // CSS/fonts may settle after DOMContentLoaded — re-measure once fully loaded.
-    window.addEventListener("load", function () {
-      resize();
-      if (prefersReduced) frame(0.4);
-    });
+    window.addEventListener("load", remeasure);
   }
 })();
