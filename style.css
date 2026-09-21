@@ -377,6 +377,25 @@ a { color: inherit; }
   gap: 1rem;
   margin-bottom: 2.2rem;
 }
+.hero__phone {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: var(--step-0);
+  margin-bottom: 1.6rem;
+}
+.hero__phone a {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(233, 162, 60, 0.5);
+  padding-bottom: 1px;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.hero__phone a:hover { color: var(--accent); border-color: var(--accent); }
+.hero__phone span { color: var(--muted); }
+
 .hero__note {
   font-family: var(--font-mono);
   font-size: var(--step--1);
@@ -465,6 +484,7 @@ a { color: inherit; }
   grid-template-columns: repeat(3, 1fr);
   gap: clamp(1rem, 2.5vw, 1.75rem);
 }
+.cards--four { grid-template-columns: repeat(2, 1fr); }
 .card {
   position: relative;
   background: linear-gradient(180deg, var(--ground-3), var(--ground-2));
@@ -514,45 +534,93 @@ a { color: inherit; }
 }
 .card__body { color: var(--muted); font-size: var(--step-0); }
 
-/* ---------- Field checklist ---------- */
-.field { position: relative; }
-.checklist {
+/* ---------- Service areas ---------- */
+.areas-list {
   list-style: none;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 clamp(1rem, 3vw, 2.5rem);
   border-top: 1px solid var(--line);
 }
-.species {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+.area {
+  display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 1rem;
-  padding: 1.15rem 0.5rem;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 1.1rem 0.5rem;
   border-bottom: 1px solid var(--line);
   transition: background-color 0.25s var(--ease), padding-left 0.25s var(--ease);
 }
-.species:hover {
+.area:hover {
   background: rgba(233, 162, 60, 0.05);
   padding-left: 1rem;
 }
-.species__no {
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-  color: var(--accent);
-}
-.species__name {
+.area__city {
   font-family: var(--font-display);
   font-size: var(--step-1);
   font-weight: 500;
 }
-.species__latin {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: var(--step-0);
+.area__meta {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--muted);
-  text-align: right;
 }
+
+/* ---------- "Also available for" ---------- */
+.also {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+.also__head {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin-bottom: 1.2rem;
+}
+.also__list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem clamp(1rem, 3vw, 2.5rem);
+}
+.also__list li {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1.25;
+  padding-left: 1rem;
+  border-left: 2px solid var(--accent-2);
+  color: var(--text);
+}
+
+/* ---------- Investors / house flip ---------- */
+.invest__panel {
+  background: linear-gradient(150deg, var(--ground-3), var(--ground-2));
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.8rem, 5vw, 3.5rem);
+  position: relative;
+  overflow: hidden;
+}
+.invest__panel::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 4px; height: 100%;
+  background: linear-gradient(180deg, var(--accent), transparent);
+}
+.invest__cols {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.2rem, 3vw, 2.5rem);
+  margin: 1.8rem 0 2rem;
+}
+.invest__body { color: var(--muted); }
 
 /* ---------- Gallery plates ---------- */
 .plates {
@@ -753,12 +821,19 @@ a { color: inherit; }
 .reveal.in-view { opacity: 1; transform: none; }
 
 /* ---------- Responsive ---------- */
+@media (max-width: 1080px) {
+  .areas-list { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 900px) {
   .about__grid { grid-template-columns: 1fr; }
-  .cards { grid-template-columns: 1fr; }
+  .cards,
+  .cards--four { grid-template-columns: 1fr; }
   .plates { grid-template-columns: repeat(2, 1fr); }
   .contact__grid { grid-template-columns: 1fr; }
-  .checklist { grid-template-columns: 1fr; }
+  .areas-list { grid-template-columns: 1fr; }
+  .also__list { grid-template-columns: 1fr; }
+  .invest__cols { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 720px) {
