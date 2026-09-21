@@ -228,6 +228,22 @@
       s.onload = process;
       document.body.appendChild(s);
     }
+
+    // Instagram sometimes refuses to serve embed.js (it 302s to a login page).
+    // Only keep the embeds if they actually turn into iframes; otherwise fall
+    // back to the designed plates rather than leaving bare text links.
+    var tries = 0;
+    var poll = setInterval(function () {
+      process();
+      if (mount.querySelector("iframe")) {
+        clearInterval(poll);
+      } else if (++tries >= 16) { // ~8s
+        clearInterval(poll);
+        mount.innerHTML = "";
+        mount.hidden = true;
+        if (plates) plates.hidden = false;
+      }
+    }, 500);
   }
 
   /* ---------- Hero scene: Everglades twilight + perched owl ---------- */
